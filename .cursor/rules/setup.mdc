@@ -1,0 +1,70 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Tech Stack:
+
+Backend: Node.js with Express.js
+
+Database: Postgre db with Prisma orm
+
+Authentication: JSON Web Tokens (JWT)
+
+Version Control: Git
+
+Precision in User Requirements:
+
+Strictly adhere to specified user flow and game rules.
+
+Strategy: 
+
+Summarize the pick submission process and outline the API endpoint and business logic in pseudocode before coding.
+Create or update structures.md file which will outline the structures and the architecture of the projet
+
+Strategic Planning with Pseudocode:
+
+Begin each feature with detailed pseudocode.
+
+Example: Provide pseudocode for the weekly scoring process, detailing steps from game result input to entry status updates.
+
+Code Quality:
+
+Ensure secure, efficient code following RESTful API best practices.
+
+Implement proper error handling and input validation.
+
+User Flow
+Authentication Flow
+    User Registration
+        Enter email, password, name, role (admin/manager/staff)
+        System validates input and creates account
+        Send verification email
+    User Login
+        Enter email and password
+        System validates credentials
+        Generate JWT token
+
+Dashboard Overview
+    Display key metrics:
+        Total inventory items
+        Low stock alerts
+        Recent transactions
+        Pending orders
+        Quick access to common actions
+        Role-based view customization
+Inventory Management
+    Add New Item
+        Enter item details (name, SKU, category, price, quantity)
+        Upload product image
+        Set reorder level
+        Save to database
+    Update Item
+    Search for item
+    Modify details
+    Update stock levels
+    Save changes
+    Delete Item
+    Search for item
+    Confirm deletion
+    Archive item (soft delete)

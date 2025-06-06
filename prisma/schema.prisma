@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js",
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication and authorization
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  name          String
+  role          UserRole  @default(STAFF)
+  isVerified    Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  transactions  Transaction[]
+  orders        Order[]
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  STAFF
+}
+
+// Inventory item model
+model InventoryItem {
+  id            String    @id @default(uuid())
+  name          String
+  sku           String    @unique
+  category      Category  @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  price         Decimal
+  quantity      Int
+  reorderLevel  Int
+  imageUrl      String?
+  description   String?
+  isArchived    Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  transactions  Transaction[]
+  orderItems    OrderItem[]
+}
+
+// Category model for organizing inventory items
+model Category {
+  id            String    @id @default(uuid())
+  name          String    @unique
+  description   String?
+  items         InventoryItem[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// Transaction model for tracking inventory movements
+model Transaction {
+  id            String    @id @default(uuid())
+  type          TransactionType
+  quantity      Int
+  item          InventoryItem @relation(fields: [itemId], references: [id])
+  itemId        String
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String
+  notes         String?
+  createdAt     DateTime  @default(now())
+}
+
+enum TransactionType {
+  IN
+  OUT
+  ADJUSTMENT
+}
+
+// Order model for managing purchase orders
+model Order {
+  id            String    @id @default(uuid())
+  status        OrderStatus @default(PENDING)
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String
+  items         OrderItem[]
+  totalAmount   Decimal
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// OrderItem model for order details
+model OrderItem {
+  id            String    @id @default(uuid())
+  order         Order     @relation(fields: [orderId], references: [id])
+  orderId       String
+  item          InventoryItem @relation(fields: [itemId], references: [id])
+  itemId        String
+  quantity      Int
+  unitPrice     Decimal
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+  CANCELLED
+} 
