@@ -14,4 +14,4 @@ router.delete('/:id', inventoryController.deleteItem.bind(inventoryController));
 // Stock adjustment
 router.post('/:id/adjust', inventoryController.adjustStock.bind(inventoryController));
 
-export default router; 
+export default router;

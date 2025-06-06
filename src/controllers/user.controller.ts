@@ -33,7 +33,7 @@ export class UserController extends BaseController {
 
       // Generate JWT token
       const token = jwt.sign(
-        { userId: user.id, role: user.role },
+        { id: user.id, email: user.email, role: user.role },
         process.env.JWT_SECRET || 'your-secret-key',
         { expiresIn: '24h' }
       );
@@ -46,7 +46,6 @@ export class UserController extends BaseController {
 
   async login(req: Request, res: Response) {
     try {
-      console.log(req.body);
       const { email, password } = req.body;
 
       // Find user
@@ -67,7 +66,7 @@ export class UserController extends BaseController {
 
       // Generate JWT token
       const token = jwt.sign(
-        { userId: user.id, role: user.role },
+        { id: user.id, email: user.email, role: user.role },
         process.env.JWT_SECRET || 'your-secret-key',
         { expiresIn: '24h' }
       );
@@ -80,7 +79,8 @@ export class UserController extends BaseController {
 
   async getProfile(req: Request, res: Response) {
     try {
-      const userId = (req as any).user.userId;
+      console.log("User: ", req.user)
+      const userId = req.user?.id;
 
       const user = await prisma.user.findUnique({
         where: { id: userId },
@@ -106,7 +106,7 @@ export class UserController extends BaseController {
 
   async updateProfile(req: Request, res: Response) {
     try {
-      const userId = (req as any).user.userId;
+      const userId = req.user?.id;
       const { name, email } = req.body;
 
       const user = await prisma.user.update({

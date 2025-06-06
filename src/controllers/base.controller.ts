@@ -17,7 +17,8 @@ export class BaseController {
   }
 
   protected handleError(error: any, res: Response) {
-    console.error('Error:', error);
-    return this.sendError(res, error.message || 'Internal server error', error.statusCode || 500);
+    if (process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "development") console.error('Error:', error);
+    const message = !error.message || error.message.includes("prisma") ? "Internal server error" : error.message;
+    return this.sendError(res, message, error.statusCode || 500);
   }
 } 

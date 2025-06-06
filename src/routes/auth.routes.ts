@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { authenticateToken } from '../middleware/auth';
 import { UserController } from '../controllers/user.controller';
 
 const router = Router();
@@ -9,7 +10,7 @@ router.post('/register', userController.register.bind(userController));
 router.post('/login', userController.login.bind(userController));
 
 // Protected routes
-router.get('/profile', userController.getProfile.bind(userController));
-router.put('/profile', userController.updateProfile.bind(userController));
+router.get('/profile', authenticateToken, userController.getProfile.bind(userController));
+router.put('/profile', authenticateToken, userController.updateProfile.bind(userController));
 
 export default router; 

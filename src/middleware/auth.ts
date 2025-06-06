@@ -31,11 +31,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 
   try {
     // Verify the token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
-      id: string;
-      email: string;
-      role: string;
-    };
+    const decoded: any = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key')
 
     // Attach user info to request object
     req.user = {

@@ -6,7 +6,7 @@ import { Prisma, OrderStatus } from '@prisma/client';
 export class OrderController extends BaseController {
   async createOrder(req: Request, res: Response) {
     try {
-      const userId = (req as any).user.userId;
+      const userId = (req as any).user.id;
       const { items, notes } = req.body;
 
       // Calculate total amount
