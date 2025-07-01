@@ -8,6 +8,9 @@ import { authenticateToken } from '../middleware/auth';
 const router = Router();
 
 // Mount routes
+router.get("/status", (req, res) => {
+  res.status(200).json({message: "The server is live and connected"})
+})
 router.use('/auth', authRoutes);
 router.use('/inventory', authenticateToken, inventoryRoutes);
 router.use('/categories', authenticateToken, categoryRoutes);
